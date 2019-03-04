@@ -9,12 +9,11 @@ class PropertyForm(FlaskForm):
     """
     name = StringField('Name', validators=[DataRequired()])
     submit = SubmitField('Submit')
-#
-# class CompanyForm(FlaskForm):
-#     """
-#     Form for admin to add or edit a Company Data
-#     """
-#     name = StringField('Name', validators=[DataRequired()])
-#     category = StringField('Category',validators=[DataRequired()])
-#     property = Property.query.filter_by(Property.id).all():
-#     submit = SubmitField('Submit')
+
+class CompanyForm(FlaskForm):
+    """
+    Form for admin to add or edit a Company Data
+    """
+    name = StringField('Name', validators=[DataRequired()])
+    category = StringField('Category',validators=[DataRequired()])
+    submit = SubmitField('Submit')

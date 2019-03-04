@@ -2,7 +2,7 @@
 
 {% import "bootstrap/utils.html" as utils %}
 {% extends "base.html" %}
-{% block title %}Property{% endblock %}
+{% block title %}Company{% endblock %}
 {% block body %}
 <div class="content-section">
   <div class="outer">
@@ -11,8 +11,8 @@
         <br/>
         {{ utils.flashed_messages() }}
         <br/>
-        <h1 style="text-align:center;">Property</h1>
-        {% if property %}
+        <h1 style="text-align:center;">Company List</h1>
+        {% if company %}
           <hr class="intro-divider">
           <div class="center">
             <table class="table table-striped table-bordered">
@@ -20,23 +20,24 @@
                 <tr>
                   <th width="15%">id</th>
                   <th width="40%"> Name </th>
+                  <th width="40%"> Category</th>
                   <th width="15%"> Edit </th>
                   <th width="15%"> Delete </th>
                 </tr>
               </thead>
               <tbody>
-              {% for pro in property %}
+              {% for com in company %}
                 <tr>
-                  <td> {{ pro.id }} </td>
-                  <td> {{ pro.name }} </td>
-
+                  <td> {{ com.id }} </td>
+                  <td> {{ com.name }} </td>
+                  <td> {{ com.category }} </td>
                   <td>
-                    <a href="{{ url_for('admin.edit_property', id=pro.id) }}">
+                    <a href="{{ url_for('admin.edit_company', id=com.id) }}">
                       <i class="fa fa-pencil"></i> Edit
                     </a>
                   </td>
                   <td>
-                    <a href="{{ url_for('admin.delete_property', id=pro.id) }}">
+                    <a href="{{ url_for('admin.delete_company', id=com.id) }}">
                       <i class="fa fa-trash"></i> Delete
                     </a>
                   </td>
@@ -48,15 +49,14 @@
           <div style="text-align: center">
         {% else %}
           <div style="text-align: center">
-            <h3> No Property have been added. </h3>
+            <h3> No Company have been added. </h3>
             <hr class="intro-divider">
         {% endif %}
-          <a href="{{ url_for('admin.add_property') }}" class="btn btn-default btn-lg">
+          <a href="{{ url_for('admin.add_company') }}" class="btn btn-default btn-lg">
             <i class="fa fa-plus"></i>
-            Add Property
+            Add Company
           </a>
           <input type="button" class="btn btn-default btn-lg" value="Back" onclick="window.history.back()" />
-
         </div>
       </div>
     </div>

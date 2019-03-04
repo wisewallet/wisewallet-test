@@ -12,12 +12,13 @@
       {% if current_user.is_authenticated %}
         {% if current_user.is_admin %}
         <li><a href="{{ url_for('home.admin_dashboard') }}">Dashboard</a></li>
-        <li><a href="{{ url_for('admin.list_property') }}">Property</a></li>
+        <li><a href="{{ url_for('admin.list_company') }}" > Companies List</a></li>
+        <li><a href="{{ url_for('admin.list_property') }}">Property List</a></li>
         {% else %}
         <li><a href="{{ url_for('home.dashboard') }}">Dashboard</a></li>
         {% endif %}
         <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
-        <li><a><i class="fa fa-user"></i>  Hi, {{ current_user.username }}!</a></li>
+        <li><a><i class="fa fa-user"></i>  Hi, {{ current_user.first_name }} {{ current_user.last_name }}!</a></li>
       {% else %}
         <li><a href="{{ url_for('home.homepage') }}">Home</a></li>
         <li><a href="{{ url_for('auth.register') }}">Register</a></li>

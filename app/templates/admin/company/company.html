@@ -1,0 +1,54 @@
+
+{% import "bootstrap/wtf.html" as wtf %}
+{% extends "base.html" %}
+{% block title %}
+    {% if add_company %}
+        Add Company
+    {% else %}
+        Edit Company
+    {% endif %}
+{% endblock %}
+{% block body %}
+<div class="content-section">
+ <div class="outer">
+    <div class="middle">
+      <div class="inner">
+        <div class="center">
+            {% if add_company %}
+                <h1>Add Company</h1>
+            {% else %}
+                <h1>Edit Company</h1>
+            {% endif %}
+            <br/>
+            <form action="" method="post" name = "CompanyForm">
+               {{ form.hidden_tag() }}
+              {{form.name.label}} : {{form.name}}<br/>
+              {{form.category.label}} :{{form.category}}<br/>
+
+
+            {% for name in property_list %}
+              <tr>
+
+                {% if name in company_pname_list %}
+                  <input type="checkbox" name="company_property" value='{{ name}}' checked>
+                {% else %}
+                  <input type="checkbox" name='company_property' value='{{ name }}'>
+                {% endif %}
+                <td>{{ name }}</td>
+
+              </tr>
+
+            {% endfor %}
+
+          </br>
+
+          {{ form.submit(class_="btn btn-default btn-lg") }} <input type="button" class="btn btn-default btn-lg" value="Back" onclick="window.history.back()" />
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
