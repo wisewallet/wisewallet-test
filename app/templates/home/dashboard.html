@@ -25,6 +25,10 @@
                 value='{{ name }}'>{{ name }}
               {% endfor %} -->
               <h1 style="text-align:center;">Company List</h1>
+              <a href="{{ url_for('home.dashboard') }}" class="btn btn-default btn-lg">
+                <i class="fa fa-plus"></i>
+                All Companies
+              </a>
               {% if company %}
               <hr class="intro-divider">
               <div class="center">

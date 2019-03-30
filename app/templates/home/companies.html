@@ -25,6 +25,10 @@
                 <h3> No Company have been added. </h3>
                 <hr class="intro-divider">
             {% endif %}
+            <a href="{{ url_for('home.dashboard') }}" class="btn btn-default btn-lg">
+              <i class="fa fa-plus"></i>
+              All Companies
+            </a>
             <input type="button" class="btn btn-default btn-lg" value="Back"
             style="margin-right: auto;" onclick="window.history.back()" />
           </div>
