@@ -4,6 +4,7 @@ from forms import SearchForm
 from ..models import Property,Company,CompanyHasProperty
 from flask import flash, render_template, request, redirect
 from . import home
+from flask import jsonify
 
 
 @home.route('/')
@@ -20,12 +21,15 @@ def dashboard():
     """
     Render the dashboard template on the /dashboard route
     """
-    form = SearchForm()
+    # form = SearchForm()
     company = Company.query.order_by(Company.id).all()
     property =  Property.query.with_entities(Property.name).all()
     property_list = [value for value, in property]
     com_dict = {}
+    data = {}
+    final_Data = []
     for com in company:
+        data = {}
         companyHasproperty = CompanyHasProperty.query.with_entities(
             CompanyHasProperty.p_id).filter(
                 CompanyHasProperty.c_id == com.id).all()
@@ -35,12 +39,19 @@ def dashboard():
         for id in company_pid_list:
             property = Property.query.filter(Property.id == id).first()
             company_pname_list.append(property.name)
-        com_dict[com.name] = company_pname_list
-    return render_template('home/dashboard.html',form=form, company=company,
-                            property_list=property_list,
-                            company_pname_list=company_pname_list,
-                            com_dict=com_dict,
-                            title="Dashboard")
+        #com_dict[com.name] = company_pname_list
+        data['company_id'] = com.id
+        data['company_name'] = com.name
+        data['company-category'] = [com.category]
+        data['company_cause'] = company_pname_list
+        final_Data.append(data)
+
+    return jsonify({"data":final_Data})
+    # return render_template('home/dashboard.html',form=form, company=company,
+    #                         property_list=property_list,
+    #                         company_pname_list=company_pname_list,
+    #                         com_dict=com_dict,
+    #                         title="Dashboard")
 
 @home.route('/admin/dashboard')
 @login_required
@@ -61,9 +72,17 @@ def get_companies_by_name(company_name):
     property_list = [value for value, in property]
     company_pid_list = companyHasproperty_pid
     company_pname_list = []
+    final_Data = []
+    data = {}
     for id in company_pid_list:
         property = Property.query.filter(Property.id == id).first()
         company_pname_list.append(property.name)
+    data['company_id'] = com.id
+    data['company_name'] = com.name
+    data['company-category'] = [com.category]
+    data['company_cause'] = company_pname_list
+    final_Data.append(data)
+    return jsonify({"data":final_Data})
     return render_template('home/companies.html',company=company,
                             company_pname_list=company_pname_list,
                             property_list=property_list,title=company.name)
@@ -71,11 +90,15 @@ def get_companies_by_name(company_name):
 @home.route('/search',methods=['GET', 'POST'])
 @login_required
 def search():
-    form = SearchForm()
-    company = Company.query.filter(Company.name.like('%' + form.search.data + '%'))
+    # form = SearchForm()
+    data = request.get_json()
+    search = data['search']
+    company = Company.query.filter(Company.name.like('%' + search + '%'))
     property =  Property.query.with_entities(Property.name).all()
     property_list = [value for value, in property]
     com_dict = {}
+    data = {}
+    final_Data = []
     for com in company:
         companyHasproperty = CompanyHasProperty.query.with_entities(
             CompanyHasProperty.p_id).filter(
@@ -87,6 +110,12 @@ def search():
             property = Property.query.filter(Property.id == id).first()
             company_pname_list.append(property.name)
         com_dict[com.name] = company_pname_list
+        data['company_id'] = com.id
+        data['company_name'] = com.name
+        data['company-category'] = [com.category]
+        data['company_cause'] = company_pname_list
+        final_Data.append(data)
+    return jsonify({"data":final_Data})
     return render_template('home/dashboard.html',form=form, company=company,
                             property_list=property_list,
                             com_dict=com_dict,
