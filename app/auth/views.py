@@ -1,10 +1,11 @@
-from flask import flash, redirect, render_template, url_for
+from flask import flash, redirect, render_template, url_for,request
 from flask_login import login_required, login_user, logout_user
 
 from . import auth
 from forms import LoginForm, RegistrationForm
 from .. import db
 from ..models import Users
+from flask import jsonify
 
 
 @auth.route('/register', methods=['GET', 'POST'])
@@ -13,20 +14,30 @@ def register():
     Handle requests to the /register route
     Add an employee to the database through the registration form
     """
-    form = RegistrationForm()
-    if form.validate_on_submit():
-        user = Users(email=form.email.data,
-                            username=form.username.data,
-                            first_name=form.first_name.data,
-                            last_name=form.last_name.data,
-                            password=form.password.data)
-
-        # add employee to the database
+    if request.method=='POST':
+        data = request.get_json()
+        email = data['email']
+        password = data['password']
+        username = data['username']
+        first_name = data['first_name']
+        last_name = data['last_name']
+        user = Users(email=email,
+                            username=username,
+                            first_name=first_name,
+                            last_name=last_name,
+                            password=password)
         db.session.add(user)
         db.session.commit()
+        return jsonify(
+            {
+                "data":{
+                    "code":200,
+                    "message": 'You have successfully registered! You may now login.'
+                    }
+            }
+        )
         flash('You have successfully registered! You may now login.')
 
-        # redirect to the login page
         return redirect(url_for('auth.login'))
 
     # load registration template
@@ -39,26 +50,103 @@ def login():
     Handle requests to the /login route
     Log an employee in through the login form
     """
-    form = LoginForm()
-    if form.validate_on_submit():
-
-        # check whether employee exists in the database and whether
-        # the password entered matches the password in the database
-        user = Users.query.filter_by(email=form.email.data).first()
+    if request.method=='POST':
+        data = request.get_json()
+        email = data['email']
+        password = data['password']
+        user = Users.query.filter_by(email=email).first()
         if user is not None and user.verify_password(
-                form.password.data):
-            # log employee in
+                password):
             login_user(user)
-
+            data = {}
+            final_Data = []
             if user.is_admin:
+                data['user_id'] = user.id
+                data['isAdmin'] = user.is_admin
+                data['username'] = user.username
+                data['email'] = user.email
+                final_Data.append(data)
+                return jsonify({
+                    'data':
+                    {
+                        "code":200,
+                        "userdata":data
+                    }
+                        })
                 return redirect(url_for('home.admin_dashboard'))
             else:
+                data['user_id'] = user.id
+                data['isAdmin'] = user.is_admin
+                data['username'] = user.username
+                data['email'] = user.email
+                final_Data.append(data)
+                return jsonify({
+                    'data':
+                    {
+                        "code":200,
+                        "userdata":data
+                    }
+                        })
                 return redirect(url_for('home.dashboard'))
-
-
         # when login details are incorrect
         else:
-            flash('Invalid email or password.')
+            return jsonify({'data':
+                {
+                    'code':400,
+                    'message':'Invalid email or password'
+                }
+            })
+    # form = LoginForm()
+    # if form.validate_on_submit():
+    #
+    #     # check whether employee exists in the database and whether
+    #     # the password entered matches the password in the database
+    #     user = Users.query.filter_by(email=form.email.data).first()
+    #     if user is not None and user.verify_password(
+    #             form.password.data):
+    #         # log employee in
+    #         login_user(user)
+    #         data = {}
+    #         final_Data = []
+    #         if user.is_admin:
+    #             data['user_id'] = user.id
+    #             data['isAdmin'] = user.is_admin
+    #             data['username'] = user.username
+    #             data['email'] = user.email
+    #             final_Data.append(data)
+    #             return jsonify({
+    #                 'data':
+    #                 {
+    #                     "code":200,
+    #                     "userdata":data
+    #                 }
+    #                     })
+    #             return redirect(url_for('home.admin_dashboard'))
+    #         else:
+    #             data['user_id'] = user.id
+    #             data['isAdmin'] = user.is_admin
+    #             data['username'] = user.username
+    #             data['email'] = user.email
+    #             final_Data.append(data)
+    #             return jsonify({
+    #                 'data':
+    #                 {
+    #                     "code":200,
+    #                     "userdata":data
+    #                 }
+    #                     })
+    #             return redirect(url_for('home.dashboard'))
+    #
+    #
+    #     # when login details are incorrect
+    #     else:
+    #         return jsonify({'data':
+    #             {
+    #                 'code':400,
+    #                 'message':'Invalid email or password'
+    #             }
+    #         })
+    #         flash('Invalid email or password.')
 
     # load login template
     return render_template('auth/login.html', form=form, title='Login')
@@ -72,6 +160,12 @@ def logout():
     Log an employee out through the logout link
     """
     logout_user()
+    return jsonify({'data':
+        {
+            'code':200,
+            'message': 'You have successfully been logged out.'
+        }
+    })
     flash('You have successfully been logged out.')
 
     # redirect to the login page
