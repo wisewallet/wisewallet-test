@@ -323,7 +323,7 @@ def edit_company(id):
     company = Company.query.get_or_404(id)
     companyHasproperty = CompanyHasProperty.query.with_entities(CompanyHasProperty.p_id).filter(CompanyHasProperty.c_id == company.id).all()
     companyHasproperty_pid = [value for value, in companyHasproperty]
-    form = CompanyForm(obj=company)
+    # form = CompanyForm(obj=company)
 
     property =  Property.query.with_entities(Property.name).all()
     property_list = [value for value, in property]
@@ -372,9 +372,9 @@ def edit_company(id):
         #         'message':'You have successfully edited the company.'
         #     }
         # })
-        flash('You have successfully edited the company.')
+        # flash('You have successfully edited the company.')
         # redirect to the property page
-        return redirect(url_for('admin.list_company'))
+        # return redirect(url_for('admin.list_company'))
 
     # form.name.data = company.name
     # form.category.data = company.category
@@ -387,10 +387,10 @@ def edit_company(id):
             'property_name' : company_pname_list
         }
     })
-    return render_template('admin/company/company.html', action="Edit",
-                           add_company=add_company, form=form,
-                           company=company,company_pname_list=company_pname_list,
-                           property_list=property_list,title="Edit Company")
+    # return render_template('admin/company/company.html', action="Edit",
+    #                        add_company=add_company, form=form,
+    #                        company=company,company_pname_list=company_pname_list,
+    #                        property_list=property_list,title="Edit Company")
 
 
 @admin.route('/company/delete/<int:id>', methods=['GET', 'POST'])
@@ -414,9 +414,9 @@ def delete_company(id):
             'message':'You have successfully deleted the company.'
         }
     })
-    flash('You have successfully deleted the company.')
-
-    # redirect to the company page
-    return redirect(url_for('admin.list_company'))
-
-    return render_template(title="Delete Company")
+    # flash('You have successfully deleted the company.')
+    #
+    # # redirect to the company page
+    # return redirect(url_for('admin.list_company'))
+    #
+    # return render_template(title="Delete Company")

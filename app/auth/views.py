@@ -36,12 +36,12 @@ def register():
                     }
             }
         )
-        flash('You have successfully registered! You may now login.')
+        # flash('You have successfully registered! You may now login.')
 
-        return redirect(url_for('auth.login'))
+        # return redirect(url_for('auth.login'))
 
     # load registration template
-    return render_template('auth/register.html', form=form, title='Register')
+    # return render_template('auth/register.html', form=form, title='Register')
 
 
 @auth.route('/login', methods=['GET', 'POST'])
@@ -96,7 +96,7 @@ def login():
                     'message':'Invalid email or password'
                 }
             })
-    # form = LoginForm()
+    #form = LoginForm()
     # if form.validate_on_submit():
     #
     #     # check whether employee exists in the database and whether
@@ -149,7 +149,7 @@ def login():
     #         flash('Invalid email or password.')
 
     # load login template
-    return render_template('auth/login.html', form=form, title='Login')
+    # return render_template('auth/login.html', form=form, title='Login')
 
 
 @auth.route('/logout')
@@ -166,7 +166,7 @@ def logout():
             'message': 'You have successfully been logged out.'
         }
     })
-    flash('You have successfully been logged out.')
+    # flash('You have successfully been logged out.')
 
     # redirect to the login page
-    return redirect(url_for('auth.login'))
+    # return redirect(url_for('auth.login'))

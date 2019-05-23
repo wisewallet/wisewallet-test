@@ -83,9 +83,9 @@ def get_companies_by_name(company_name):
     data['company_cause'] = company_pname_list
     final_Data.append(data)
     return jsonify({"data":final_Data})
-    return render_template('home/companies.html',company=company,
-                            company_pname_list=company_pname_list,
-                            property_list=property_list,title=company.name)
+    # return render_template('home/companies.html',company=company,
+    #                         company_pname_list=company_pname_list,
+    #                         property_list=property_list,title=company.name)
 
 @home.route('/search',methods=['GET', 'POST'])
 @login_required
@@ -116,7 +116,7 @@ def search():
         data['company_cause'] = company_pname_list
         final_Data.append(data)
     return jsonify({"data":final_Data})
-    return render_template('home/dashboard.html',form=form, company=company,
-                            property_list=property_list,
-                            com_dict=com_dict,
-                            title="Dashboard")
+    # return render_template('home/dashboard.html',form=form, company=company,
+    #                         property_list=property_list,
+    #                         com_dict=com_dict,
+    #                         title="Dashboard")
