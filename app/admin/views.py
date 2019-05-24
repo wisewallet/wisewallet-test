@@ -11,9 +11,14 @@ def check_admin():
     """
     Prevent non-admins from accessing the page
     """
-    if not current_user.is_admin:
-        abort(403)
+    return current_user.is_admin
 
+
+# @app.errorhandler(401)
+# def unauthorized(error):
+#     response = jsonify({'code': 401, 'message': 'You are not authorized to access'})
+#     response.status_code = 401
+#     return response
 
 # property Views
 
@@ -24,7 +29,12 @@ def list_property():
     """
     List all property
     """
-    check_admin()
+    if not check_admin():
+        return jsonify({
+            "status_code":401,
+            "messages" :"You are not authorized to access this page",
+            "code" :401
+        })
     final_Data=[]
     property = Property.query.order_by(Property.id).all()
     for pro in property:
@@ -48,7 +58,12 @@ def add_property():
     """
     Add a property to the database
     """
-    check_admin()
+    if not check_admin():
+        return jsonify({
+            "status_code":401,
+            "messages" :"You are not authorized to access this page",
+            "code" :401
+        })
 
     add_property = True
 
@@ -116,7 +131,12 @@ def edit_property(id):
     """
     Edit a Property
     """
-    check_admin()
+    if not check_admin():
+        return jsonify({
+            "status_code":401,
+            "messages" :"You are not authorized to access this page",
+            "code" :401
+        })
 
     add_property = False
 
@@ -167,7 +187,12 @@ def delete_property(id):
     """
     Delete a property from the database
     """
-    check_admin()
+    if not check_admin():
+        return jsonify({
+            "status_code":401,
+            "messages" :"You are not authorized to access this page",
+            "code" :401
+        })
 
     property = Property.query.get_or_404(id)
     companyHasproperty = CompanyHasProperty.query.filter(CompanyHasProperty.p_id == id).all()
@@ -197,18 +222,36 @@ def list_company():
     """
     List all company
     """
-    check_admin()
+    if not check_admin():
+        return jsonify({
+            "status_code":401,
+            "messages" :"You are not authorized to access this page",
+            "code" :401
+        })
     final_Data=[]
     company = Company.query.order_by(Company.id).all()
     for com in company:
         data = {}
         data['company_id'] = com.id
-        data['compan_name'] = com.name
-        data['compan_category'] = com.category
+        data['company_name'] = com.name
+        data['company_category'] = com.category
+        data['company_link'] = com.link
+        companyHasproperty = CompanyHasProperty.query.with_entities(CompanyHasProperty.p_id).filter(CompanyHasProperty.c_id == com.id).all()
+        companyHasproperty_pid = [value for value, in companyHasproperty]
+        # form = CompanyForm(obj=company)
+
+        property =  Property.query.with_entities(Property.name).all()
+        property_list = [value for value, in property]
+        company_pid_list = companyHasproperty_pid
+        company_pname_list = []
+        for id in company_pid_list:
+            property = Property.query.filter(Property.id == id).first()
+            company_pname_list.append(property.name)
+        data['company_cause'] = company_pname_list
         final_Data.append(data)
-    return jsonify({'data':
+    return jsonify({"data":
         {
-            'code':200,
+            "code":200,
             "company_data":final_Data
         }
     })
@@ -223,7 +266,12 @@ def add_company():
     """
     Add a Company to the database
     """
-    check_admin()
+    if not check_admin():
+        return jsonify({
+            "status_code":401,
+            "messages" :"You are not authorized to access this page",
+            "code" :401
+        })
 
     add_company = True
     property =  Property.query.with_entities(Property.name).all()
@@ -236,13 +284,16 @@ def add_company():
         data = request.get_json()
         name = data['name']
         category = data['category']
-        company = Company(name=name,category=category)
+        link = data['link']
+
+        company = Company(name=name, category=category, link=link)
         try:
             # add company to the database
             db.session.add(company)
             db.session.commit()
 
-            company_property_list = request.form.getlist('company_property')
+            # company_property_list = request.form.getlist('company_property')
+            company_property_list = data['property_list']
             company = Company.query.filter(Company.name == name).first()
 
             for name in company_property_list:
@@ -316,7 +367,12 @@ def edit_company(id):
     """
     Edit a company
     """
-    check_admin()
+    if not check_admin():
+        return jsonify({
+            "status_code":401,
+            "messages" :"You are not authorized to access this page",
+            "code" :401
+        })
 
     add_company = False
 
@@ -337,6 +393,7 @@ def edit_company(id):
         data = request.get_json()
         company.name = data['name']
         company.category = data['category']
+        company.link = data['link']
         companyHasproperty = CompanyHasProperty.query.filter(CompanyHasProperty.c_id == company.id).all()
         for i in companyHasproperty:
             db.session.delete(i)
@@ -383,6 +440,7 @@ def edit_company(id):
             'code' : 200,
             'name' : company.name,
             'category' : company.category,
+            'link' : company.link,
             'property_list' : company_pid_list,
             'property_name' : company_pname_list
         }
@@ -399,7 +457,12 @@ def delete_company(id):
     """
     Delete a Company from the database
     """
-    check_admin()
+    if not check_admin():
+        return jsonify({
+            "status_code":401,
+            "messages" :"You are not authorized to access this page",
+            "code" :401
+        })
 
     company = Company.query.get_or_404(id)
     companyHasproperty = CompanyHasProperty.query.filter(CompanyHasProperty.c_id == id).all()

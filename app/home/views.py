@@ -42,7 +42,8 @@ def dashboard():
         #com_dict[com.name] = company_pname_list
         data['company_id'] = com.id
         data['company_name'] = com.name
-        data['company-category'] = [com.category]
+        data['company_category'] = [com.category]
+        data['company_link'] = comp.link
         data['company_cause'] = company_pname_list
         final_Data.append(data)
 
@@ -79,7 +80,8 @@ def get_companies_by_name(company_name):
         company_pname_list.append(property.name)
     data['company_id'] = com.id
     data['company_name'] = com.name
-    data['company-category'] = [com.category]
+    data['company_category'] = [com.category]
+    data['company_link'] = com.link
     data['company_cause'] = company_pname_list
     final_Data.append(data)
     return jsonify({"data":final_Data})
@@ -110,9 +112,11 @@ def search():
             property = Property.query.filter(Property.id == id).first()
             company_pname_list.append(property.name)
         com_dict[com.name] = company_pname_list
+        data = {}
         data['company_id'] = com.id
         data['company_name'] = com.name
-        data['company-category'] = [com.category]
+        data['company_category'] = [com.category]
+        data['company_link'] = com.link
         data['company_cause'] = company_pname_list
         final_Data.append(data)
     return jsonify({"data":final_Data})

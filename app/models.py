@@ -74,6 +74,7 @@ class Company(db.Model):
     id = db.Column(db.Integer,primary_key=True,autoincrement=True)
     name = db.Column(db.String(256), unique=True)
     category = db.Column(db.String(256))
+    link = db.Column(db.String(256), unique=True)
 
     def __repr__(self):
         return '<Company: {}>'.format(self.name)
