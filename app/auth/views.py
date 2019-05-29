@@ -28,7 +28,7 @@ def register():
                             password=password)
         db.session.add(user)
         db.session.commit()
-        return jsonify(
+        response = jsonify(
             {
                 "data":{
                     "code":200,
@@ -36,6 +36,8 @@ def register():
                     }
             }
         )
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        return response
         # flash('You have successfully registered! You may now login.')
 
         # return redirect(url_for('auth.login'))
@@ -66,13 +68,15 @@ def login():
                 data['username'] = user.username
                 data['email'] = user.email
                 final_Data.append(data)
-                return jsonify({
+                response = jsonify({
                     'data':
                     {
                         "code":200,
                         "userdata":data
                     }
                         })
+                response.headers.add('Access-Control-Allow-Origin', '*')
+                return response
                 return redirect(url_for('home.admin_dashboard'))
             else:
                 data['user_id'] = user.id
@@ -80,22 +84,26 @@ def login():
                 data['username'] = user.username
                 data['email'] = user.email
                 final_Data.append(data)
-                return jsonify({
+                response = jsonify({
                     'data':
                     {
                         "code":200,
                         "userdata":data
                     }
                         })
+                response.headers.add('Access-Control-Allow-Origin', '*')
+                return response
                 return redirect(url_for('home.dashboard'))
         # when login details are incorrect
         else:
-            return jsonify({'data':
+            response = jsonify({'data':
                 {
                     'code':400,
                     'message':'Invalid email or password'
                 }
             })
+            response.headers.add('Access-Control-Allow-Origin', '*')
+            return response
     #form = LoginForm()
     # if form.validate_on_submit():
     #
@@ -160,12 +168,14 @@ def logout():
     Log an employee out through the logout link
     """
     logout_user()
-    return jsonify({'data':
+    respone = jsonify({'data':
         {
             'code':200,
             'message': 'You have successfully been logged out.'
         }
     })
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
     # flash('You have successfully been logged out.')
 
     # redirect to the login page
