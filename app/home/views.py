@@ -47,7 +47,14 @@ def dashboard():
         data['company_cause'] = company_pname_list
         final_Data.append(data)
 
-    return jsonify({"data":final_Data})
+    response = jsonify({"data":
+        {
+            "code":200,
+            "company_data":final_Data
+        }
+    })
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
     # return render_template('home/dashboard.html',form=form, company=company,
     #                         property_list=property_list,
     #                         company_pname_list=company_pname_list,
@@ -84,7 +91,14 @@ def get_companies_by_name(company_name):
     data['company_link'] = com.link
     data['company_cause'] = company_pname_list
     final_Data.append(data)
-    return jsonify({"data":final_Data})
+    response = jsonify({"data":
+        {
+            "code":200,
+            "company_data":final_Data
+        }
+    })
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
     # return render_template('home/companies.html',company=company,
     #                         company_pname_list=company_pname_list,
     #                         property_list=property_list,title=company.name)
@@ -119,7 +133,14 @@ def search():
         data['company_link'] = com.link
         data['company_cause'] = company_pname_list
         final_Data.append(data)
-    return jsonify({"data":final_Data})
+    response = jsonify({"data":
+        {
+            "code":200,
+            "company_data":final_Data
+        }
+    })
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
     # return render_template('home/dashboard.html',form=form, company=company,
     #                         property_list=property_list,
     #                         com_dict=com_dict,
