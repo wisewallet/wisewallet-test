@@ -37,6 +37,8 @@ def register():
             }
         )
         response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+        response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
         return response
         # flash('You have successfully registered! You may now login.')
 
@@ -76,6 +78,8 @@ def login():
                     }
                         })
                 response.headers.add('Access-Control-Allow-Origin', '*')
+                response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+                response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
                 return response
                 return redirect(url_for('home.admin_dashboard'))
             else:
@@ -92,6 +96,8 @@ def login():
                     }
                         })
                 response.headers.add('Access-Control-Allow-Origin', '*')
+                response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+                response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
                 return response
                 return redirect(url_for('home.dashboard'))
         # when login details are incorrect
@@ -103,6 +109,8 @@ def login():
                 }
             })
             response.headers.add('Access-Control-Allow-Origin', '*')
+            response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+            response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
             return response
     #form = LoginForm()
     # if form.validate_on_submit():
@@ -175,6 +183,8 @@ def logout():
         }
     })
     response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
     return response
     # flash('You have successfully been logged out.')
 
