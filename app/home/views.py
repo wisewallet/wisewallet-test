@@ -54,6 +54,8 @@ def dashboard():
         }
     })
     response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
     return response
     # return render_template('home/dashboard.html',form=form, company=company,
     #                         property_list=property_list,
@@ -98,6 +100,8 @@ def get_companies_by_name(company_name):
         }
     })
     response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
     return response
     # return render_template('home/companies.html',company=company,
     #                         company_pname_list=company_pname_list,
@@ -140,6 +144,8 @@ def search():
         }
     })
     response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
     return response
     # return render_template('home/dashboard.html',form=form, company=company,
     #                         property_list=property_list,

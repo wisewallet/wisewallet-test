@@ -36,6 +36,8 @@ def list_property():
             "code" :401
         })
         response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+        response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
         return response
     final_Data=[]
     property = Property.query.order_by(Property.id).all()
@@ -51,6 +53,8 @@ def list_property():
         }
     })
     response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
     return response
     return render_template('admin/property/properties.html',
                            property=property, title="property")
@@ -69,6 +73,8 @@ def add_property():
             "code" :401
         })
         response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+        response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
         return response
 
     add_property = True
@@ -88,6 +94,8 @@ def add_property():
                 }
             })
             response.headers.add('Access-Control-Allow-Origin', '*')
+            response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+            response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
             return response
             flash('You have successfully added a new property.')
         except:
@@ -99,6 +107,8 @@ def add_property():
                 }
             })
             response.headers.add('Access-Control-Allow-Origin', '*')
+            response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+            response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
             return response
             flash('Error: property name already exists.')
 
@@ -148,6 +158,8 @@ def edit_property(id):
             "code" :401
         })
         response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+        response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
         return response
 
     add_property = False
@@ -165,6 +177,8 @@ def edit_property(id):
             }
         })
         response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+        response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
         return response
     response = jsonify({'data':
             {
@@ -173,6 +187,8 @@ def edit_property(id):
             }
         })
     response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
     return response
     #
     #
@@ -210,6 +226,8 @@ def delete_property(id):
             "code" :401
         })
         response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+        response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
         return response
     property = Property.query.get_or_404(id)
     companyHasproperty = CompanyHasProperty.query.filter(CompanyHasProperty.p_id == id).all()
@@ -225,6 +243,8 @@ def delete_property(id):
         }
     })
     response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
     return response
     flash('You have successfully deleted the property.')
 
@@ -248,6 +268,8 @@ def list_company():
             "code" :401
         })
         response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+        response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
         return response
     final_Data=[]
     company = Company.query.order_by(Company.id).all()
@@ -277,6 +299,8 @@ def list_company():
         }
     })
     response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
     return response
     return render_template('admin/company/companies.html',
                            company=company, title="Company Data")
@@ -296,6 +320,8 @@ def add_company():
             "code" :401
         })
         response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+        response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
         return response
     add_company = True
     property =  Property.query.with_entities(Property.name).all()
@@ -332,6 +358,8 @@ def add_company():
                 }
             })
             response.headers.add('Access-Control-Allow-Origin', '*')
+            response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+            response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
             return response
             flash('You have successfully added a new Company.')
         except:
@@ -343,6 +371,8 @@ def add_company():
                 }
             })
             response.headers.add('Access-Control-Allow-Origin', '*')
+            response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+            response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
             return response
             flash('Error: company name already exists.')
 
@@ -402,6 +432,8 @@ def edit_company(id):
             "code" :401
         })
         response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+        response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
         return response
 
     add_company = False
@@ -443,6 +475,8 @@ def edit_company(id):
             }
         })
         response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+        response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
         return response
     # if form.validate_on_submit():
         # company.name = form.name.data
@@ -479,6 +513,8 @@ def edit_company(id):
         }
     })
     response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
     return response
     # return render_template('admin/company/company.html', action="Edit",
     #                        add_company=add_company, form=form,
@@ -499,6 +535,8 @@ def delete_company(id):
             "code" :401
         })
         response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+        response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
         return response
 
     company = Company.query.get_or_404(id)
@@ -515,6 +553,8 @@ def delete_company(id):
         }
     })
     response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
     return response
     # flash('You have successfully deleted the company.')
     #
