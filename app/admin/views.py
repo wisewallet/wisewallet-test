@@ -298,9 +298,6 @@ def list_company():
             "company_data":final_Data
         }
     })
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
     return response
     return render_template('admin/company/companies.html',
                            company=company, title="Company Data")
@@ -319,9 +316,6 @@ def add_company():
             "messages" :"You are not authorized to access this page",
             "code" :401
         })
-        response.headers.add('Access-Control-Allow-Origin', '*')
-        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-        response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
         return response
     add_company = True
     property =  Property.query.with_entities(Property.name).all()
@@ -357,9 +351,6 @@ def add_company():
                     'message':'You have successfully added a new Company.'
                 }
             })
-            response.headers.add('Access-Control-Allow-Origin', '*')
-            response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-            response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
             return response
             flash('You have successfully added a new Company.')
         except:
@@ -370,9 +361,6 @@ def add_company():
                     'message':'company name already exists..'
                 }
             })
-            response.headers.add('Access-Control-Allow-Origin', '*')
-            response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-            response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
             return response
             flash('Error: company name already exists.')
 
@@ -431,9 +419,6 @@ def edit_company(id):
             "messages" :"You are not authorized to access this page",
             "code" :401
         })
-        response.headers.add('Access-Control-Allow-Origin', '*')
-        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-        response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
         return response
 
     add_company = False
@@ -474,9 +459,6 @@ def edit_company(id):
                 'message':'You have successfully edited the company.'
             }
         })
-        response.headers.add('Access-Control-Allow-Origin', '*')
-        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-        response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
         return response
     # if form.validate_on_submit():
         # company.name = form.name.data
@@ -512,9 +494,6 @@ def edit_company(id):
             'property_name' : company_pname_list
         }
     })
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
     return response
     # return render_template('admin/company/company.html', action="Edit",
     #                        add_company=add_company, form=form,
@@ -534,9 +513,6 @@ def delete_company(id):
             "messages" :"You are not authorized to access this page",
             "code" :401
         })
-        response.headers.add('Access-Control-Allow-Origin', '*')
-        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-        response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
         return response
 
     company = Company.query.get_or_404(id)
@@ -552,9 +528,6 @@ def delete_company(id):
             'message':'You have successfully deleted the company.'
         }
     })
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
     return response
     # flash('You have successfully deleted the company.')
     #
