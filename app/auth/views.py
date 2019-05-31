@@ -77,9 +77,6 @@ def login():
                         "userdata":data
                     }
                         })
-                response.headers.add('Access-Control-Allow-Origin', '*')
-                response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-                response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
                 return response
                 return redirect(url_for('home.admin_dashboard'))
             else:
@@ -95,9 +92,6 @@ def login():
                         "userdata":data
                     }
                         })
-                response.headers.add('Access-Control-Allow-Origin', '*')
-                response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-                response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
                 return response
                 return redirect(url_for('home.dashboard'))
         # when login details are incorrect
@@ -108,9 +102,6 @@ def login():
                     'message':'Invalid email or password'
                 }
             })
-            response.headers.add('Access-Control-Allow-Origin', '*')
-            response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-            response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
             return response
     #form = LoginForm()
     # if form.validate_on_submit():
@@ -182,9 +173,6 @@ def logout():
             'message': 'You have successfully been logged out.'
         }
     })
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
     return response
     # flash('You have successfully been logged out.')
 
