@@ -101,6 +101,23 @@ def get_companies_by_name(company_name):
     #                         company_pname_list=company_pname_list,
     #                         property_list=property_list,title=company.name)
 
+@home.route('/property',methods=['GET'])
+def get_property_data():
+    final_Data = []
+    property = Property.query.order_by(Property.id).all()
+    for pro in property:
+        data = {}
+        data['property_id'] = pro.id
+        data['property_name'] = pro.name
+        final_Data.append(data)
+    response = jsonify({"data":
+        {
+            "code":200,
+            "property_data": final_Data
+        }
+    })
+    return response
+
 @home.route('/search',methods=['GET', 'POST'])
 @login_required
 def search():
