@@ -35,9 +35,6 @@ def list_property():
             "messages" :"You are not authorized to access this page",
             "code" :401
         })
-        response.headers.add('Access-Control-Allow-Origin', '*')
-        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-        response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
         return response
     final_Data=[]
     property = Property.query.order_by(Property.id).all()
@@ -52,9 +49,6 @@ def list_property():
             "property_data":final_Data
         }
     })
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
     return response
     return render_template('admin/property/properties.html',
                            property=property, title="property")
@@ -72,9 +66,6 @@ def add_property():
             "messages" :"You are not authorized to access this page",
             "code" :401
         })
-        response.headers.add('Access-Control-Allow-Origin', '*')
-        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-        response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
         return response
 
     add_property = True
@@ -93,9 +84,6 @@ def add_property():
                     'message':'You have successfully added a new property.'
                 }
             })
-            response.headers.add('Access-Control-Allow-Origin', '*')
-            response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-            response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
             return response
             flash('You have successfully added a new property.')
         except:
@@ -106,9 +94,6 @@ def add_property():
                     'message':'property name already exists.'
                 }
             })
-            response.headers.add('Access-Control-Allow-Origin', '*')
-            response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-            response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
             return response
             flash('Error: property name already exists.')
 
@@ -157,9 +142,6 @@ def edit_property(id):
             "messages" :"You are not authorized to access this page",
             "code" :401
         })
-        response.headers.add('Access-Control-Allow-Origin', '*')
-        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-        response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
         return response
 
     add_property = False
@@ -176,9 +158,6 @@ def edit_property(id):
                 'message':'You have successfully edited the property.'
             }
         })
-        response.headers.add('Access-Control-Allow-Origin', '*')
-        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-        response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
         return response
     response = jsonify({'data':
             {
@@ -186,9 +165,6 @@ def edit_property(id):
                 'name': property.name
             }
         })
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
     return response
     #
     #
@@ -225,9 +201,6 @@ def delete_property(id):
             "messages" :"You are not authorized to access this page",
             "code" :401
         })
-        response.headers.add('Access-Control-Allow-Origin', '*')
-        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-        response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
         return response
     property = Property.query.get_or_404(id)
     companyHasproperty = CompanyHasProperty.query.filter(CompanyHasProperty.p_id == id).all()
@@ -242,9 +215,6 @@ def delete_property(id):
             'message':'You have successfully deleted the property.'
         }
     })
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
     return response
     flash('You have successfully deleted the property.')
 
@@ -267,9 +237,6 @@ def list_company():
             "messages" :"You are not authorized to access this page",
             "code" :401
         })
-        response.headers.add('Access-Control-Allow-Origin', '*')
-        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-        response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
         return response
     final_Data=[]
     company = Company.query.order_by(Company.id).all()

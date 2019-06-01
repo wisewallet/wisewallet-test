@@ -167,7 +167,7 @@ def logout():
     Log an employee out through the logout link
     """
     logout_user()
-    respone = jsonify({'data':
+    response = jsonify({'data':
         {
             'code':200,
             'message': 'You have successfully been logged out.'
