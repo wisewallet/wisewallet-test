@@ -33,7 +33,7 @@ def register():
         db.session.add(user)
         db.session.commit()
         mail_api = MailAPI()
-        mail_api.send_simple_message(to_email = "vmehta342@gmail.com")
+        # mail_api.send_simple_message(to_email = "vmehta342@gmail.com")
         msg = "New Registeration\nEmail = "+email+"\t Full name = " \
             + first_name + " " + last_name
         mail_api.send_simple_message(content=msg)
