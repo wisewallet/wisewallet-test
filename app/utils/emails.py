@@ -22,6 +22,7 @@ class MailAPI(object):
         self.content  = file_html.read()
 
     def send_simple_message(
+<<<<<<< HEAD
         self, to_email=None, from_email=None, content=None):
         if to_email is None:
             to_email = self.to_email
@@ -29,6 +30,10 @@ class MailAPI(object):
             from_email = self.from_email
         if content is None:
             content = self.content
+=======
+        self, to_email=self.to_email, from_email=self.from_email, content=self.content):
+
+>>>>>>> 9a9ad29ba310f6ab3144e9e9134ab2a44a75bda6
         return requests.post(
             "https://api.mailgun.net/v3/"+self.domain+"/messages",
             auth=("api", self.api_key),
