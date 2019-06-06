@@ -1,13 +1,17 @@
 import requests
 import codecs
 import ConfigParser
+import os
+
+here = os.path.dirname(os.path.abspath(__file__))
+ini = os.path.normpath(os.path.join(here, 'mail_api.ini'))
+htmls = os.path.normpath(os.path.join(here, 'users_final.html'))
 
 class MailAPI(object):
 
     def __init__(self):
         self.config = ConfigParser.RawConfigParser()
-        configFilePath = r'mail_api.ini'
-        self.config.read(configFilePath)
+        self.config.read(ini)
         self.get_config()
         self.get_default_content()
 
@@ -18,7 +22,7 @@ class MailAPI(object):
         self.domain = self.config.get('mail','DOMAIN')
 
     def get_default_content(self):
-        file_html = codecs.open("users_final.html",'r')
+        file_html = codecs.open(htmls,'r')
         self.content  = file_html.read()
 
     def send_simple_message(
@@ -29,16 +33,14 @@ class MailAPI(object):
             from_email = self.from_email
         if content is None:
             content = self.content
+        print(self.from_email)
+        print(self.to_email)
+        print(self.api_key == 'cae2ea3cf2b4b90bf12edcd44683b54a-4412457b-8ad16907')
+        print(self.domain)
         return requests.post(
             "https://api.mailgun.net/v3/"+self.domain+"/messages",
             auth=("api", self.api_key),
-            data={"from": from_email,
-            "to": to_email,
+            data={"from": self.from_email,
+            "to": self.to_email,
             "subject": "Welcome to wisewallet",
             "html": content})
-
-
-
-
-
-# print(send_simple_message("vmehta342@gmail.com","WiseWallet <welcome@mywisewallet.com>"))
