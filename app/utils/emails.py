@@ -33,10 +33,8 @@ class MailAPI(object):
             from_email = self.from_email
         if content is None:
             content = self.content
-        print(self.from_email)
-        print(self.to_email)
-        print(self.api_key == 'cae2ea3cf2b4b90bf12edcd44683b54a-4412457b-8ad16907')
-        print(self.domain)
+        print(from_email)
+        print(to_email)
         return requests.post(
             "https://api.mailgun.net/v3/"+self.domain+"/messages",
             auth=("api", self.api_key),
