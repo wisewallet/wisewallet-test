@@ -1,12 +1,14 @@
 from flask import flash, redirect, render_template, url_for,request
 from flask_login import login_required, login_user, logout_user
+from flask import jsonify
 
 from . import auth
 from forms import LoginForm, RegistrationForm
 from .. import db
 from ..models import Users
-from flask import jsonify
+from ..utils.emails import MailAPI
 
+import datetime
 
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
@@ -26,8 +28,15 @@ def register():
                             first_name=first_name,
                             last_name=last_name,
                             password=password)
+                            # create_date=datetime.datetime.utcnow,
+                            # updated_date=None)
         db.session.add(user)
         db.session.commit()
+        mail_api = MailAPI()
+        mail_api.send_simple_message(to_email = "vmehta342@gmail.com")
+        msg = "New Registeration\nEmail = "+email+"\t Full name = " \
+            + first_name + " " + last_name
+        mail_api.send_simple_message(content=msg)
         response = jsonify(
             {
                 "data":{
@@ -36,9 +45,6 @@ def register():
                     }
             }
         )
-        response.headers.add('Access-Control-Allow-Origin', '*')
-        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-        response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
         return response
         # flash('You have successfully registered! You may now login.')
 
@@ -69,6 +75,8 @@ def login():
                 data['isAdmin'] = user.is_admin
                 data['username'] = user.username
                 data['email'] = user.email
+                data['first_name'] = user.first_name
+                data['last_name'] = user.last_name
                 final_Data.append(data)
                 response = jsonify({
                     'data':
@@ -84,6 +92,8 @@ def login():
                 data['isAdmin'] = user.is_admin
                 data['username'] = user.username
                 data['email'] = user.email
+                data['first_name'] = user.first_name
+                data['last_name'] = user.last_name
                 final_Data.append(data)
                 response = jsonify({
                     'data':
