@@ -1,12 +1,41 @@
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
-
+import datetime
 from app import db, login_manager
+from sqlalchemy import Column, Integer, DateTime
 
+class Usersdatas(db.Model):
+    """
+    Create a Usersdata table to store user activity
+    """
+    __tablename__ = 'usersdatas'
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    u_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    _company_data = db.Column(db.String)
+    _property_data = db.Column(db.String)
+    created_date = Column(DateTime, default=datetime.datetime.utcnow)
+    update_data = Column(DateTime, default=datetime.datetime.utcnow)
+
+    @property
+    def company_data(self):
+        return [company_name for company_name in self._company_data.split(';')]
+
+    @company_data.setter
+    def company_data(self, value):
+        self._company_data += ';%s' % value
+
+    @property
+    def property_data(self):
+        return [property_name for property_name in self._property_data.split(';')]
+
+    @property_data.setter
+    def property_data(self, value):
+        self._property_data += ';%s' % value
 
 class Users(UserMixin, db.Model):
     """
-    Create an Employee table
+    Create a User table
     """
 
     # Ensures table will be named in plural and not in singular
@@ -20,6 +49,8 @@ class Users(UserMixin, db.Model):
     last_name = db.Column(db.String(60), index=True)
     password_hash = db.Column(db.String(128))
     is_admin = db.Column(db.Boolean, default=False)
+    # created_date = Column(DateTime, default=datetime.datetime.utcnow)
+    # updated_date = Column(DateTime, default=datetime.datetime.utcnow)
 
     @property
     def password(self):
@@ -87,5 +118,5 @@ class CompanyHasProperty(db.Model):
     __tablename__ = 'companyHasproperty'
 
     id = db.Column(db.Integer,primary_key=True,autoincrement=True)
-    c_id = db.Column(db.INTEGER, db.ForeignKey('company.id'), nullable=False)
-    p_id = db.Column(db.INTEGER, db.ForeignKey('property.id'), nullable=False)
+    c_id = db.Column(db.Integer, db.ForeignKey('company.id'), nullable=False)
+    p_id = db.Column(db.Integer, db.ForeignKey('property.id'), nullable=False)

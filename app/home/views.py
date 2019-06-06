@@ -1,7 +1,7 @@
 from flask import render_template
 from flask_login import current_user,login_required
 from forms import SearchForm
-from ..models import Property,Company,CompanyHasProperty
+from ..models import Property,Company,CompanyHasProperty,Usersdatas
 from flask import flash, render_template, request, redirect
 from . import home
 from flask import jsonify
@@ -43,7 +43,7 @@ def dashboard():
         data['company_id'] = com.id
         data['company_name'] = com.name
         data['company_category'] = [com.category]
-        data['company_link'] = comp.link
+        data['company_link'] = com.link
         data['company_cause'] = company_pname_list
         final_Data.append(data)
 
@@ -159,3 +159,24 @@ def search():
     #                         property_list=property_list,
     #                         com_dict=com_dict,
     #                         title="Dashboard")
+#
+# @home.route(,methods=['POST'])
+# @login_required
+# def save_users_history():
+#     data = request.get_json()
+#     properties = data['property_names']
+#     companies = data['company_names']
+#     search_data = data['search_items']
+#     current_user_id = current_user.id
+#     final_property = ""
+#     final_company = ""
+#     final_search = ""
+#     for property in properties:
+#         final_property += property + ";"
+#     for company in companies:
+#         final_company += company + ";"
+#     for search in search_data:
+#         final_search += search + ";"
+#     usersdatas = Usersdatas(u_id=current_user_id,
+#                             company_data = final_company,
+#                             property_data = final_property)
