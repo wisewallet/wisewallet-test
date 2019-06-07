@@ -2,6 +2,7 @@ import requests
 import codecs
 import ConfigParser
 import os
+import smtplib, ssl
 
 here = os.path.dirname(os.path.abspath(__file__))
 ini = os.path.normpath(os.path.join(here, 'mail_api.ini'))
@@ -16,10 +17,14 @@ class MailAPI(object):
         self.get_default_content()
 
     def get_config(self):
-        self.from_email = self.config.get('mail','FROM_EMAIL')
+        self.from_email = self.config.get('mail','from_email')
         self.to_email = self.config.get('mail','TO_EMAIL')
-        self.api_key = self.config.get('mail','API_KEY')
-        self.domain = self.config.get('mail','DOMAIN')
+        # self.api_key = self.config.get('mail','API_KEY')
+        # self.domain = self.config.get('mail','DOMAIN')
+        self.smtp_server = self.config.get('mail', 'GMAIL_SERVER')
+        self.port = self.config.get('mail', 'PORT')
+        self.login = self.config.get('mail','USERNAME')
+        self.password  = self.config.get('mail','PASSWORD')
 
     def get_default_content(self):
         file_html = codecs.open(htmls,'r')
@@ -42,3 +47,18 @@ class MailAPI(object):
             "to": self.to_email,
             "subject": "Welcome to wisewallet",
             "html": content})
+
+    def sendemail(self, message, to_addr_list=None,
+              subject="Welcome to wisewallet",
+              smtpserver='smtp.gmail.com'):
+      header  = 'From: %s' % self.from_email
+      header += 'To: %s' % ','.join(self.to_email)
+      header += 'Subject: %s' % subject
+      message = header + message
+      server_ssl = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+      server_ssl.ehlo()
+      print(self.login)
+      server_ssl.login(self.login,self.password)
+      problems = server_ssl.sendmail(self.login, self.to_email, message)
+      print(problems)
+      server_ssl.quit()
