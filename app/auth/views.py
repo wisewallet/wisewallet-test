@@ -35,8 +35,9 @@ def register():
         mail_api = MailAPI()
         # mail_api.send_simple_message(to_email = "vmehta342@gmail.com")
         msg = "New Registeration\nEmail = "+email+"\t Full name = " \
-            + first_name + " " + last_name
-        mail_api.send_simple_message(content=msg)
+            + first_name + " " + last_name + "Has just signup."
+        mail_api.sendemail(msg)
+        #mail_api.send_simple_message(content=msg)
         response = jsonify(
             {
                 "data":{
