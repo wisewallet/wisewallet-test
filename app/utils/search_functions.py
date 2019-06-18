@@ -126,18 +126,21 @@ def search_company_based_on_filters(search_company_name=None,
                                     search_company_causes=None):
     company_causes = []
     company_category = []
+    company = []
     if search_company_name != "":
         print(search_company_name)
         company = search_by_company_name(search_company_name)
         print(company)
     if len(search_company_category) != 0:
         company_category = search_by_company_category(search_company_category)
-        company_category = intersection(company, company_category)
+        if  len(company) != 0:
+            company_category = intersection(company, company_category)
         company_id = company_category
         print("SEARCH BY COMPANY CATEGORY = ", company_id)
     if len(search_company_causes) != 0:
         company_causes = search_by_company_cause(search_company_causes)
-        company_causes = intersection(company, company_causes)
+        if len(company) != 0:
+            company_causes = intersection(company, company_causes)
         company_id = company_causes
         print("SEARCH BY COMPANY causes = ", company_id)
 
