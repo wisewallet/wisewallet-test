@@ -27,7 +27,6 @@ def dashboard():
     property =  Property.query.with_entities(Property.name).all()
     property_list = [value for value, in property]
     com_dict = {}
-    data = {}
     final_Data = []
     for com in company:
         data = {}

@@ -7,6 +7,8 @@ from .. import db
 from ..models import Property,Company,CompanyHasProperty
 from flask import jsonify
 
+import base64
+
 def check_admin():
     """
     Prevent non-admins from accessing the page
@@ -246,6 +248,10 @@ def list_company():
         data['company_name'] = com.name
         data['company_category'] = com.category
         data['company_link'] = com.link
+        if com.logo:
+            data['company_logo'] = base64.b64encode(com.logo).decode('ascii')
+        else:
+            data['company_logo'] = ""
         companyHasproperty = CompanyHasProperty.query.with_entities(CompanyHasProperty.p_id).filter(CompanyHasProperty.c_id == com.id).all()
         companyHasproperty_pid = [value for value, in companyHasproperty]
         # form = CompanyForm(obj=company)
@@ -292,25 +298,29 @@ def add_company():
     property_list = [value for value, in property]
 
     if request.method == 'POST':
-        data = request.get_json()
+        data = request.form
         name = data['name']
         category = data['category']
         link = data['link']
-
-        company = Company(name=name, category=category, link=link)
+        files = request.files.getlist('logo')
+        # print(files[0])
+        logo = files[0].read()
+        # print(logo)
+        company_property_list = request.form.getlist('property_list')
+        print(type(logo))
+        company = Company(name=name, category=category, link=link, logo=logo)
+        print(company)
         try:
             # add company to the database
             db.session.add(company)
-            db.session.commit()
-
             # company_property_list = request.form.getlist('company_property')
-            company_property_list = data['property_list']
+            db.session.commit()
             company = Company.query.filter(Company.name == name).first()
-
             for name in company_property_list:
                 property = Property.query.filter(Property.name == name).first()
                 companyHasproperty = CompanyHasProperty(c_id = company.id,p_id = property.id)
                 db.session.add(companyHasproperty)
+                print(name)
                 db.session.commit()
             response = jsonify({'data':
                 {
@@ -320,8 +330,9 @@ def add_company():
             })
             return response
             flash('You have successfully added a new Company.')
-        except:
+        except Exception as e:
             # in case Company name already exists
+            print(e)
             response = jsonify({'data':
                 {
                     'code':400,
@@ -329,7 +340,7 @@ def add_company():
                 }
             })
             return response
-            flash('Error: company name already exists.')
+        flash('Error: company name already exists.')
 
 
     # if form.validate_on_submit():
@@ -405,16 +416,18 @@ def edit_company(id):
         company_pname_list.append(property.name)
 
     if request.method == 'POST':
-        data = request.get_json()
+        data = request.form
         company.name = data['name']
         company.category = data['category']
         company.link = data['link']
+        files = request.files.getlist('logo')
+        company.logo = files[0].read()
         companyHasproperty = CompanyHasProperty.query.filter(CompanyHasProperty.c_id == company.id).all()
         for i in companyHasproperty:
             db.session.delete(i)
         db.session.commit()
         # property_names = request.form.getlist('company_property')
-        property_names = data['property_list']
+        property_names = request.form.getlist('property_list')
         for name in property_names:
             property = Property.query.filter(Property.name == name).first()
             companyHasproperty = CompanyHasProperty(c_id = company.id,p_id = property.id)
