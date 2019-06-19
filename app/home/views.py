@@ -45,6 +45,10 @@ def dashboard():
         data['company_category'] = [com.category]
         data['company_link'] = com.link
         data['company_cause'] = company_pname_list
+        if com.logo:
+            data['company_logo'] = base64.b64encode(com.logo).decode('ascii')
+        else:
+            data['company_logo'] = ""
         final_Data.append(data)
 
     response = jsonify({"data":
@@ -91,6 +95,11 @@ def get_companies_by_name(company_name):
     data['company_category'] = [com.category]
     data['company_link'] = com.link
     data['company_cause'] = company_pname_list
+    if com.logo:
+        data['company_logo'] = base64.b64encode(com.logo).decode('ascii')
+    else:
+        data['company_logo'] = ""
+
     final_Data.append(data)
     response = jsonify({"data":
         {

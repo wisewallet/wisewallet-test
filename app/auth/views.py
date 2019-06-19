@@ -71,7 +71,7 @@ def login():
             login_user(user)
             data = {}
             final_Data = []
-            user.remote_address = request.remote_addr
+            user.remote_address = request.environ.get('HTTP_X_FORWARDED_FOR')
             db.session.add(user)
             db.session.commit()
             if user.is_admin:

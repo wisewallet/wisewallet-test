@@ -118,6 +118,10 @@ def prepare_response(company_id=None):
         data['company_category'] = [com.category]
         data['company_link'] = com.link
         data['company_cause'] = company_pname_list
+        if com.logo:
+            data['company_logo'] = base64.b64encode(com.logo).decode('ascii')
+        else:
+            data['company_logo'] = ""
         final_Data.append(data)
     return final_Data
 
@@ -130,6 +134,7 @@ def search_company_based_on_filters(search_company_name=None,
     if search_company_name != "":
         print(search_company_name)
         company = search_by_company_name(search_company_name)
+        company_id = company
         print(company)
     if len(search_company_category) != 0:
         company_category = search_by_company_category(search_company_category)
