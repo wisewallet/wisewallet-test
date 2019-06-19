@@ -14,7 +14,7 @@ import datetime
 def register():
     """
     Handle requests to the /register route
-    Add an employee to the database through the registration form
+    Add an users to the database through the registration form
     """
     if request.method=='POST':
         data = request.get_json()
@@ -71,6 +71,9 @@ def login():
             login_user(user)
             data = {}
             final_Data = []
+            user.remote_address = request.remote_addr
+            db.session.add(user)
+            db.session.commit()
             if user.is_admin:
                 data['user_id'] = user.id
                 data['isAdmin'] = user.is_admin

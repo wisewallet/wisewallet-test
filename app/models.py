@@ -49,6 +49,7 @@ class Users(UserMixin, db.Model):
     last_name = db.Column(db.String(60), index=True, nullable=False)
     password_hash = db.Column(db.String(128))
     is_admin = db.Column(db.Boolean, default=False)
+    remote_address = db.Column(db.String(255))
     created_date = Column(DateTime, default=datetime.datetime.utcnow)
     # updated_date = Column(DateTime, default=datetime.datetime.utcnow)
 
