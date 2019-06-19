@@ -7,6 +7,8 @@ from . import home
 from flask import jsonify
 from ..utils.search_functions import *
 
+import base64
+
 
 @home.route('/')
 def homepage():

@@ -1,5 +1,5 @@
 from ..models import Property,Company,CompanyHasProperty
-
+import base64
 
 def search_by_company_name(search=None):
     if search is None:
