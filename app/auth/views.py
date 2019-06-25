@@ -30,22 +30,32 @@ def register():
                             password=password)
                             # create_date=datetime.datetime.utcnow,
                             # updated_date=None)
-        db.session.add(user)
-        db.session.commit()
-        mail_api = MailAPI()
-        # mail_api.send_simple_message(to_email = "vmehta342@gmail.com")
-        msg = "New Registeration\nEmail = "+email+"\t Full name = " \
-            + first_name + " " + last_name + "Has just signup."
-        mail_api.sendemail(msg)
+        try:
+            db.session.add(user)
+            db.session.commit()
+            mail_api = MailAPI()
+            # mail_api.send_simple_message(to_email = "vmehta342@gmail.com")
+            msg = "New Registeration\nEmail = "+email+"\t Full name = " \
+                + first_name + " " + last_name + "Has just signup."
+            mail_api.sendemail(msg)
         #mail_api.send_simple_message(content=msg)
-        response = jsonify(
-            {
-                "data":{
-                    "code":200,
-                    "message": 'You have successfully registered! You may now login.'
+            response = jsonify(
+                {
+                    "data":{
+                        "code":200,
+                        "message": 'You have successfully registered! You may now login.'
+                        }
+                }
+            )
+        except:
+            response = jsonify(
+                {
+                    "data": {
+                        "code": 400,
+                        "message": "Email or UserName is exist"
                     }
-            }
-        )
+                }
+            )
         return response
         # flash('You have successfully registered! You may now login.')
 
@@ -89,6 +99,7 @@ def login():
                         "userdata":data
                     }
                         })
+
                 return response
                 return redirect(url_for('home.admin_dashboard'))
             else:

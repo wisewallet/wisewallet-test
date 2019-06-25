@@ -418,9 +418,11 @@ def edit_company(id):
     if request.method == 'POST':
         data = request.form
         company.name = data['name']
+	print(data['name'])
         company.category = data['category']
         company.link = data['link']
         files = request.files.getlist('logo')
+	print(files)
         company.logo = files[0].read()
         companyHasproperty = CompanyHasProperty.query.filter(CompanyHasProperty.c_id == company.id).all()
         for i in companyHasproperty:
@@ -464,12 +466,17 @@ def edit_company(id):
 
     # form.name.data = company.name
     # form.category.data = company.category
+    if company.logo:
+        logo = base64.b64encode(company.logo).decode('ascii')
+    else:
+        logo = ""
     response = jsonify({'data':
         {
             'code' : 200,
             'name' : company.name,
             'category' : company.category,
             'link' : company.link,
+            'logo' : logo,
             'property_list' : company_pid_list,
             'property_name' : company_pname_list
         }
