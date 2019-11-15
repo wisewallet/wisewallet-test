@@ -1,3 +1,7 @@
 /instance
+/venv
 /env
 *.pyc
+*.ini
+.idea
+migrations/*
