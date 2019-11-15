@@ -1,7 +1,11 @@
 /instance
+/venv3
 /venv
 /env
 *.pyc
 *.ini
 .idea
 migrations/*
+*.pem
+*.vscode
+__pycache__/
