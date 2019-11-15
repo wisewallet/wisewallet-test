@@ -17,12 +17,12 @@ login_manager = LoginManager()
 def create_app(config_name):
     app = Flask(__name__, instance_relative_config=True)
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-    app.config.from_object(app_config['development'])
+    app.config.from_object(config_name)
     app.config.from_pyfile('config.py',silent=True)
 
     Bootstrap(app)
     db.init_app(app)
-    CORS(app)
+    CORS(app,supports_credentials=True)
     login_manager.init_app(app)
     login_manager.login_message = "You must be logged in to access this page."
     login_manager.login_view = "auth.login"
@@ -41,5 +41,8 @@ def create_app(config_name):
 
     from .home import home as home_blueprint
     app.register_blueprint(home_blueprint)
+
+    from .company import company as company_blueprint
+    app.register_blueprint(company_blueprint, url_prefix='/company_users')
 
     return app
