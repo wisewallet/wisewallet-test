@@ -19,8 +19,6 @@ class MailAPI(object):
     def get_config(self):
         self.from_email = self.config.get('mail','from_email')
         self.to_email = self.config.get('mail','TO_EMAIL')
-        # self.api_key = self.config.get('mail','API_KEY')
-        # self.domain = self.config.get('mail','DOMAIN')
         self.smtp_server = self.config.get('mail', 'GMAIL_SERVER')
         self.port = self.config.get('mail', 'PORT')
         self.login = self.config.get('mail','USERNAME')
