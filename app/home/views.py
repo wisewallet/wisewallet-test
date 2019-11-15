@@ -1,6 +1,5 @@
 from flask import render_template
 from flask_login import current_user, login_required
-from forms import SearchForm
 from ..models import Property, Company, CompanyHasProperty
 from flask import flash, render_template, request, redirect
 from . import home
@@ -26,7 +25,6 @@ def dashboard():
     """
     Render the dashboard template on the /dashboard route
     """
-    # form = SearchForm()
     company = Company.query.order_by(Company.id).all()
     property = Property.query.with_entities(Property.name).all()
     property_list = [value for value, in property]
