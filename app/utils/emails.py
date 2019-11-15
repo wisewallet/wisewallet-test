@@ -1,6 +1,6 @@
 import requests
 import codecs
-import ConfigParser
+import configparser
 import os
 import smtplib, ssl
 
@@ -11,7 +11,7 @@ htmls = os.path.normpath(os.path.join(here, 'users_final.html'))
 class MailAPI(object):
 
     def __init__(self):
-        self.config = ConfigParser.RawConfigParser()
+        self.config = configparser.ConfigParser()
         self.config.read(ini)
         self.get_config()
         self.get_default_content()
