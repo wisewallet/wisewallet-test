@@ -9,3 +9,4 @@ migrations/*
 *.pem
 *.vscode
 __pycache__/
+*.sh
