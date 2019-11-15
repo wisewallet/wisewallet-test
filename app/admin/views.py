@@ -1,13 +1,13 @@
-from flask import abort, flash, redirect, render_template, url_for,request
+from flask import abort, flash, redirect, render_template, url_for, request
 from flask_login import current_user, login_required
 
 from . import admin
-from forms import PropertyForm,CompanyForm
 from .. import db
-from ..models import Property,Company,CompanyHasProperty
+from ..models import Property, Company, CompanyHasProperty
 from flask import jsonify
 
 import base64
+
 
 def check_admin():
     """
@@ -16,15 +16,7 @@ def check_admin():
     return current_user.is_admin
 
 
-# @app.errorhandler(401)
-# def unauthorized(error):
-#     response = jsonify({'code': 401, 'message': 'You are not authorized to access'})
-#     response.status_code = 401
-#     return response
-
 # property Views
-
-
 @admin.route('/property', methods=['GET', 'POST'])
 @login_required
 def list_property():
@@ -33,12 +25,12 @@ def list_property():
     """
     if not check_admin():
         response = jsonify({
-            "status_code":401,
-            "messages" :"You are not authorized to access this page",
-            "code" :401
+            "status_code": 401,
+            "messages": "You are not authorized to access this page",
+            "code": 401
         })
         return response
-    final_Data=[]
+    final_Data = []
     property = Property.query.order_by(Property.id).all()
     for pro in property:
         data = {}
@@ -46,14 +38,12 @@ def list_property():
         data['property_name'] = pro.name
         final_Data.append(data)
     response = jsonify({'data':
-        {
-            'code':200,
-            "property_data":final_Data
-        }
-    })
+                        {
+                            'code': 200,
+                            "property_data": final_Data
+                        }
+                        })
     return response
-    return render_template('admin/property/properties.html',
-                           property=property, title="property")
 
 
 @admin.route('/property/add', methods=['GET', 'POST'])
@@ -64,9 +54,9 @@ def add_property():
     """
     if not check_admin():
         response = jsonify({
-            "status_code":401,
-            "messages" :"You are not authorized to access this page",
-            "code" :401
+            "status_code": 401,
+            "messages": "You are not authorized to access this page",
+            "code": 401
         })
         return response
 
@@ -74,62 +64,28 @@ def add_property():
 
     if request.method == 'POST':
         data = request.get_json()
-        name  = data['name']
+        name = data['name'].strip()
         property = Property(name=name)
         try:
             # add property to the database
             db.session.add(property)
             db.session.commit()
             response = jsonify({'data':
-                {
-                    'code':200,
-                    'message':'You have successfully added a new property.'
-                }
-            })
+                                {
+                                    'code': 200,
+                                    'message': 'You have successfully added a new property.'
+                                }
+                                })
             return response
-            flash('You have successfully added a new property.')
         except:
             # in case property name already exists
             response = jsonify({'data':
-                {
-                    'code':400,
-                    'message':'property name already exists.'
-                }
-            })
+                                {
+                                    'code': 400,
+                                    'message': 'property name already exists.'
+                                }
+                                })
             return response
-            flash('Error: property name already exists.')
-
-    # form = PropertyForm()
-    # if form.validate_on_submit():
-    #     property = Property(name=form.name.data)
-    #     try:
-    #         # add property to the database
-    #         db.session.add(property)
-    #         db.session.commit()
-    #         return jsonify({'data':
-    #             {
-    #                 'code':200,
-    #                 'message':'You have successfully added a new property.'
-    #             }
-    #         })
-    #         flash('You have successfully added a new property.')
-    #     except:
-    #         # in case property name already exists
-    #         return jsonify({'data':
-    #             {
-    #                 'code':400,
-    #                 'message':'property name already exists.'
-    #             }
-    #         })
-    #         flash('Error: property name already exists.')
-
-        # redirect to property page
-        return redirect(url_for('admin.list_property'))
-
-    # load property template
-    # return render_template('admin/property/property.html', action="Add",
-    #                        add_property=add_property, form=form,
-    #                        title="Add Property")
 
 
 @admin.route('/property/edit/<int:id>', methods=['GET', 'POST'])
@@ -140,9 +96,9 @@ def edit_property(id):
     """
     if not check_admin():
         response = jsonify({
-            "status_code":401,
-            "messages" :"You are not authorized to access this page",
-            "code" :401
+            "status_code": 401,
+            "messages": "You are not authorized to access this page",
+            "code": 401
         })
         return response
 
@@ -152,43 +108,22 @@ def edit_property(id):
 
     if request.method == 'POST':
         data = request.get_json()
-        property.name = data['name']
+        property.name = data['name'].strip()
         db.session.commit()
         response = jsonify({'data':
-            {
-                'code':200,
-                'message':'You have successfully edited the property.'
-            }
-        })
+                            {
+                                'code': 200,
+                                'message': 'You have successfully edited the property.'
+                            }
+                            })
         return response
     response = jsonify({'data':
-            {
-                'code':200,
-                'name': property.name
-            }
-        })
+                        {
+                            'code': 200,
+                            'name': property.name
+                        }
+                        })
     return response
-    #
-    #
-    # form = PropertyForm(obj=property)
-    # if form.validate_on_submit():
-    #     property.name = form.name.data
-    #     db.session.commit()
-    #     return jsonify({'data':
-    #         {
-    #             'code':200,
-    #             'message':'You have successfully edited the property.'
-    #         }
-    #     })
-    #     flash('You have successfully edited the property.')
-    #
-    #     # redirect to the property page
-    #     return redirect(url_for('admin.list_property'))
-
-    # form.name.data = property.name
-    return render_template('admin/property/property.html', action="Edit",
-                           add_property=add_property, form=form,
-                           property=property, title="Edit property")
 
 
 @admin.route('/property/delete/<int:id>', methods=['GET', 'POST'])
@@ -199,33 +134,29 @@ def delete_property(id):
     """
     if not check_admin():
         response = jsonify({
-            "status_code":401,
-            "messages" :"You are not authorized to access this page",
-            "code" :401
+            "status_code": 401,
+            "messages": "You are not authorized to access this page",
+            "code": 401
         })
         return response
     property = Property.query.get_or_404(id)
-    companyHasproperty = CompanyHasProperty.query.filter(CompanyHasProperty.p_id == id).all()
+    companyHasproperty = CompanyHasProperty.query.filter(
+        CompanyHasProperty.p_id == id).all()
     for i in companyHasproperty:
         db.session.delete(i)
     db.session.commit()
     db.session.delete(property)
     db.session.commit()
     response = jsonify({'data':
-        {
-            'code':200,
-            'message':'You have successfully deleted the property.'
-        }
-    })
+                        {
+                            'code': 200,
+                            'message': 'You have successfully deleted the property.'
+                        }
+                        })
     return response
-    flash('You have successfully deleted the property.')
-
-    # redirect to the property page
-    return redirect(url_for('admin.list_property'))
-
-    return render_template(title="Delete property")
 
 # Company views
+
 
 @admin.route('/company', methods=['GET', 'POST'])
 @login_required
@@ -235,12 +166,12 @@ def list_company():
     """
     if not check_admin():
         response = jsonify({
-            "status_code":401,
-            "messages" :"You are not authorized to access this page",
-            "code" :401
+            "status_code": 401,
+            "messages": "You are not authorized to access this page",
+            "code": 401
         })
         return response
-    final_Data=[]
+    final_Data = []
     company = Company.query.order_by(Company.id).all()
     for com in company:
         data = {}
@@ -252,11 +183,11 @@ def list_company():
             data['company_logo'] = base64.b64encode(com.logo).decode('ascii')
         else:
             data['company_logo'] = ""
-        companyHasproperty = CompanyHasProperty.query.with_entities(CompanyHasProperty.p_id).filter(CompanyHasProperty.c_id == com.id).all()
+        companyHasproperty = CompanyHasProperty.query.with_entities(
+            CompanyHasProperty.p_id).filter(CompanyHasProperty.c_id == com.id).all()
         companyHasproperty_pid = [value for value, in companyHasproperty]
-        # form = CompanyForm(obj=company)
 
-        property =  Property.query.with_entities(Property.name).all()
+        property = Property.query.with_entities(Property.name).all()
         property_list = [value for value, in property]
         company_pid_list = companyHasproperty_pid
         company_pname_list = []
@@ -266,15 +197,12 @@ def list_company():
         data['company_cause'] = company_pname_list
         final_Data.append(data)
     response = jsonify({"data":
-        {
-            "code":200,
-            "company_data":final_Data
-        }
-    })
+                        {
+                            "code": 200,
+                            "company_data": final_Data
+                        }
+                        })
     return response
-    return render_template('admin/company/companies.html',
-                           company=company, title="Company Data")
-
 
 
 @admin.route('/company/add', methods=['GET', 'POST'])
@@ -285,13 +213,13 @@ def add_company():
     """
     if not check_admin():
         response = jsonify({
-            "status_code":401,
-            "messages" :"You are not authorized to access this page",
-            "code" :401
+            "status_code": 401,
+            "messages": "You are not authorized to access this page",
+            "code": 401
         })
         return response
     add_company = True
-    property =  Property.query.with_entities(Property.name).all()
+    property = Property.query.with_entities(Property.name).all()
 
     # form = CompanyForm()
 
@@ -299,13 +227,11 @@ def add_company():
 
     if request.method == 'POST':
         data = request.form
-        name = data['name']
-        category = data['category']
-        link = data['link']
+        name = data['name'].strip()
+        category = data['category'].strip()
+        link = data['link'].strip()
         files = request.files.getlist('logo')
-        # print(files[0])
         logo = files[0].read()
-        # print(logo)
         company_property_list = request.form.getlist('property_list')
         print(type(logo))
         company = Company(name=name, category=category, link=link, logo=logo)
@@ -313,76 +239,31 @@ def add_company():
         try:
             # add company to the database
             db.session.add(company)
-            # company_property_list = request.form.getlist('company_property')
             db.session.commit()
             company = Company.query.filter(Company.name == name).first()
             for name in company_property_list:
                 property = Property.query.filter(Property.name == name).first()
-                companyHasproperty = CompanyHasProperty(c_id = company.id,p_id = property.id)
+                companyHasproperty = CompanyHasProperty(
+                    c_id=company.id, p_id=property.id)
                 db.session.add(companyHasproperty)
                 print(name)
                 db.session.commit()
             response = jsonify({'data':
-                {
-                    'code':200,
-                    'message':'You have successfully added a new Company.'
-                }
-            })
+                                {
+                                    'code': 200,
+                                    'message': 'You have successfully added a new Company.'
+                                }
+                                })
             return response
-            flash('You have successfully added a new Company.')
         except Exception as e:
             # in case Company name already exists
-            print(e)
             response = jsonify({'data':
-                {
-                    'code':400,
-                    'message':'company name already exists..'
-                }
-            })
+                                {
+                                    'code': 400,
+                                    'message': 'company name already exists..'
+                                }
+                                })
             return response
-        flash('Error: company name already exists.')
-
-
-    # if form.validate_on_submit():
-    #     company = Company(name=form.name.data,category=form.category.data)
-        # try:
-        #     # add company to the database
-        #     db.session.add(company)
-        #     db.session.commit()
-        #
-        #     company_property_list = request.form.getlist('company_property')
-        #     company = Company.query.filter(Company.name == form.name.data ).first()
-        #
-        #     for name in company_property_list:
-        #         property = Property.query.filter(Property.name == name).first()
-        #         companyHasproperty = CompanyHasProperty(c_id = company.id,p_id = property.id)
-        #         db.session.add(companyHasproperty)
-        #         db.session.commit()
-        #     return jsonify({'data':
-        #         {
-        #             'code':200,
-        #             'message':'You have successfully added a new Company.'
-        #         }
-        #     })
-        #     flash('You have successfully added a new Company.')
-        # except:
-        #     # in case Company name already exists
-        #     return jsonify({'data':
-        #         {
-        #             'code':400,
-        #             'message':'company name already exists..'
-        #         }
-        #     })
-        #     flash('Error: company name already exists.')
-
-        # redirect to company page
-        # return redirect(url_for('admin.list_company'))
-    # else:
-        # print (form.errors)
-    # load company template
-        # return render_template('admin/company/company.html', action="Add",
-                           # add_company=add_company, form=form,property_list = property_list,
-                           # title="Add Company")
 
 
 @admin.route('/company/edit/<int:id>', methods=['GET', 'POST'])
@@ -392,21 +273,22 @@ def edit_company(id):
     Edit a company
     """
     if not check_admin():
-        response = jsonify({
-            "status_code":401,
-            "messages" :"You are not authorized to access this page",
-            "code" :401
-        })
-        return response
+        if not check_company():
+            response = jsonify({
+                "status_code": 401,
+                "messages": "You are not authorized to access this page",
+                "code": 401
+            })
+            return response
 
     add_company = False
 
     company = Company.query.get_or_404(id)
-    companyHasproperty = CompanyHasProperty.query.with_entities(CompanyHasProperty.p_id).filter(CompanyHasProperty.c_id == company.id).all()
+    companyHasproperty = CompanyHasProperty.query.with_entities(
+        CompanyHasProperty.p_id).filter(CompanyHasProperty.c_id == company.id).all()
     companyHasproperty_pid = [value for value, in companyHasproperty]
-    # form = CompanyForm(obj=company)
 
-    property =  Property.query.with_entities(Property.name).all()
+    property = Property.query.with_entities(Property.name).all()
     property_list = [value for value, in property]
     company_pid_list = companyHasproperty_pid
     company_pname_list = []
@@ -417,14 +299,21 @@ def edit_company(id):
 
     if request.method == 'POST':
         data = request.form
-        company.name = data['name']
-	print(data['name'])
-        company.category = data['category']
-        company.link = data['link']
+        company.name = data['name'].strip()
+        company.category = data['category'].strip()
+        company.link = data['link'].strip()
         files = request.files.getlist('logo')
-	print(files)
-        company.logo = files[0].read()
-        companyHasproperty = CompanyHasProperty.query.filter(CompanyHasProperty.c_id == company.id).all()
+        if len(files) > 0:
+            company.logo = files[0].read()
+        company.address_line_1 = data['address_line_1'].strip()
+        company.address_line_2 = data['address_line_2'].strip()
+        company.city = data['city'].strip()
+        company.state = data['state'].strip()
+        company.country = data['country'].strip()
+        company.zip_code = data['zip_code'].strip()
+
+        companyHasproperty = CompanyHasProperty.query.filter(
+            CompanyHasProperty.c_id == company.id).all()
         for i in companyHasproperty:
             db.session.delete(i)
         db.session.commit()
@@ -432,60 +321,28 @@ def edit_company(id):
         property_names = request.form.getlist('property_list')
         for name in property_names:
             property = Property.query.filter(Property.name == name).first()
-            companyHasproperty = CompanyHasProperty(c_id = company.id,p_id = property.id)
+            companyHasproperty = CompanyHasProperty(
+                c_id=company.id, p_id=property.id)
             db.session.add(companyHasproperty)
             db.session.commit()
         response = jsonify({'data':
-            {
-                'code':200,
-                'message':'You have successfully edited the company.'
-            }
-        })
+                            {
+                                'code': 200,
+                                'message': 'You have successfully edited the company.'
+                            }
+                            })
         return response
-    # if form.validate_on_submit():
-        # company.name = form.name.data
-        # companyHasproperty = CompanyHasProperty.query.filter(CompanyHasProperty.c_id == company.id).all()
-        # for i in companyHasproperty:
-        #     db.session.delete(i)
-        # db.session.commit()
-        # property_names = request.form.getlist('company_property')
-        # for name in property_names:
-        #     property = Property.query.filter(Property.name == name).first()
-        #     companyHasproperty = CompanyHasProperty(c_id = company.id,p_id = property.id)
-        #     db.session.add(companyHasproperty)
-        #     db.session.commit()
-        # return jsonify({'data':
-        #     {
-        #         'code':200,
-        #         'message':'You have successfully edited the company.'
-        #     }
-        # })
-        # flash('You have successfully edited the company.')
-        # redirect to the property page
-        # return redirect(url_for('admin.list_company'))
 
-    # form.name.data = company.name
-    # form.category.data = company.category
-    if company.logo:
-        logo = base64.b64encode(company.logo).decode('ascii')
-    else:
-        logo = ""
+    data = company.get_json()
+    data['company_cause'] = []
+    data['company_cause'] = company_pname_list
     response = jsonify({'data':
-        {
-            'code' : 200,
-            'name' : company.name,
-            'category' : company.category,
-            'link' : company.link,
-            'logo' : logo,
-            'property_list' : company_pid_list,
-            'property_name' : company_pname_list
-        }
-    })
+                        {
+                            'code': 200,
+                            'company_data': data
+                        }
+                        })
     return response
-    # return render_template('admin/company/company.html', action="Edit",
-    #                        add_company=add_company, form=form,
-    #                        company=company,company_pname_list=company_pname_list,
-    #                        property_list=property_list,title="Edit Company")
 
 
 @admin.route('/company/delete/<int:id>', methods=['GET', 'POST'])
@@ -496,29 +353,24 @@ def delete_company(id):
     """
     if not check_admin():
         response = jsonify({
-            "status_code":401,
-            "messages" :"You are not authorized to access this page",
-            "code" :401
+            "status_code": 401,
+            "messages": "You are not authorized to access this page",
+            "code": 401
         })
         return response
 
     company = Company.query.get_or_404(id)
-    companyHasproperty = CompanyHasProperty.query.filter(CompanyHasProperty.c_id == id).all()
+    companyHasproperty = CompanyHasProperty.query.filter(
+        CompanyHasProperty.c_id == id).all()
     for i in companyHasproperty:
         db.session.delete(i)
     db.session.commit()
     db.session.delete(company)
     db.session.commit()
     response = jsonify({'data':
-        {
-            'code':200,
-            'message':'You have successfully deleted the company.'
-        }
-    })
+                        {
+                            'code': 200,
+                            'message': 'You have successfully deleted the company.'
+                        }
+                        })
     return response
-    # flash('You have successfully deleted the company.')
-    #
-    # # redirect to the company page
-    # return redirect(url_for('admin.list_company'))
-    #
-    # return render_template(title="Delete Company")
