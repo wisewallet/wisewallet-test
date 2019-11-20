@@ -18,18 +18,18 @@ def check_admin():
 
 # property Views
 @admin.route('/property', methods=['GET', 'POST'])
-@login_required
+# @login_required
 def list_property():
     """
     List all property
     """
-    if not check_admin():
-        response = jsonify({
-            "status_code": 401,
-            "messages": "You are not authorized to access this page",
-            "code": 401
-        })
-        return response
+    # if not check_admin():
+    #     response = jsonify({
+    #         "status_code": 401,
+    #         "messages": "You are not authorized to access this page",
+    #         "code": 401
+    #     })
+    #     return response
     final_Data = []
     property = Property.query.order_by(Property.id).all()
     for pro in property:
@@ -159,18 +159,18 @@ def delete_property(id):
 
 
 @admin.route('/company', methods=['GET', 'POST'])
-@login_required
+# @login_required
 def list_company():
     """
     List all company
     """
-    if not check_admin():
-        response = jsonify({
-            "status_code": 401,
-            "messages": "You are not authorized to access this page",
-            "code": 401
-        })
-        return response
+    # if not check_admin():
+    #     response = jsonify({
+    #         "status_code": 401,
+    #         "messages": "You are not authorized to access this page",
+    #         "code": 401
+    #     })
+    #     return response
     final_Data = []
     company = Company.query.order_by(Company.id).all()
     for com in company:
